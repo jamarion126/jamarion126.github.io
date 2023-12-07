@@ -48,4 +48,14 @@ tags:
 
 ## 通用组件
 
+### 富文本
+
 - *[mp-html](https://jin-yufeng.gitee.io/mp-html/#/)* 挺好的富文本组件
+
+### 请求
+
+- *[alova](https://alova.js.org/zh-CN/)* 全平台通用，下载适配器就行了
+
+```js
+ yarn add alova
+```

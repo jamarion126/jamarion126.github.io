@@ -28,7 +28,10 @@ external_link:
   exclude: ''
 filename_case: 0
 render_drafts: false
-post_asset_folder: false
+post_asset_folder: true
+marked:
+  prependRoot: true
+  postAsset: true
 relative_link: false
 future: true
 syntax_highlighter: highlight.js
@@ -60,4 +63,6 @@ exclude: null
 ignore: null
 theme: icarus
 deploy:
-  type: ''
+  type: 'git'
+  branch: main
+  repo: git@gitee.com:jamario126/jamario126.git
