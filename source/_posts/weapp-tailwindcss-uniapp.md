@@ -10,8 +10,6 @@ tags:
 - tailwindcss
 ---
 
-## weapp-tailwindcss
-
 官网地址：[weapp-tailwindcss](https://weapp-tw.icebreaker.top/)
 
 ### 使用包管理器安装 tailwindcss
