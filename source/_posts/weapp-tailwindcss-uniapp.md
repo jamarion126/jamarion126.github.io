@@ -100,7 +100,7 @@ module.exports = {
 ### 外置 postcss 插件
 
 ```shell shell
-yarn -D postcss-rem-to-responsive-pixel
+yarn add -D postcss-rem-to-responsive-pixel
 ```
 
 ### 安装weapp-tailwindcss
