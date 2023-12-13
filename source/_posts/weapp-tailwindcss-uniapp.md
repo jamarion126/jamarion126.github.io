@@ -109,6 +109,8 @@ yarn add -D postcss-rem-to-responsive-pixel
 yarn add -D weapp-tailwindcss
 ```
 
+并运行 `npx weapp-tw patch`
+
 然后把下列脚本，添加进你的 package.json 的 scripts 字段里:
 
 ``` shell package.json
@@ -159,4 +161,19 @@ export default defineConfig({
 
 ```
 
-大功告成
+### 使用 Prettier 自动进行类别排序
+
+github地址：[prettier-plugin-tailwindcss](https://github.com/tailwindlabs/prettier-plugin-tailwindcss)
+
+```shell shell
+yarn add -D prettier prettier-plugin-tailwindcss
+```
+
+根目录新增 `prettier.config.js`
+
+```javascript prettier.config.js
+// prettier.config.js
+module.exports = {
+  plugins: ['prettier-plugin-tailwindcss'],
+}
+```
