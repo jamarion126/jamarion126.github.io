@@ -56,6 +56,6 @@ tags:
 
 - *[alova](https://alova.js.org/zh-CN/)* 全平台通用，下载适配器就行了
 
-```js
- yarn add alova
-```
+### 正则大全
+
+- *[any-rule](https://any-rule.vercel.app/)* 几乎所有正则都有
