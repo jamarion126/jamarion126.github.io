@@ -4,7 +4,6 @@ date: 2023-12-12 16:41:26
 excerpt: ice breaker 大佬开发的插件 一条路直接安装
 toc: true
 tags:
-  - vue
   - vue3
   - uniapp
   - tailwindcss
