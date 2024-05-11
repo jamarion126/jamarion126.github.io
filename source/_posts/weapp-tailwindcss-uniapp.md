@@ -37,19 +37,29 @@ module.exports = {
 };
 ```
 
+### 创建 platform.js 在根目录
+
+```javascript platform.js
+const isH5 = process.env.UNI_PLATFORM === "h5";
+const isApp = process.env.UNI_PLATFORM === "app";
+const isMpWeiXin = process.env.UNI_PLATFORM === "mp-weixin";
+
+module.exports = {
+  isH5,
+  isApp,
+  isMpWeiXin,
+};
+```
+
 ### 配置 tailwind.config.js
 
 ```javascript tailwind.config.js
-/** @type {import('tailwindcss').Config} */
+import { isH5, isApp, isMpWeiXin } from "./platform";
 module.exports = {
-  // 这里给出了一份 uni-app /taro 通用示例，具体要根据你自己项目的目录结构进行配置
-  // 不在 content 包括的文件内，你编写的 class，是不会生成对应的css工具类的
   content: ["./public/index.html", "./src/**/*.{html,js,ts,jsx,tsx,vue}"],
-  // 其他配置项
-  // ...
   corePlugins: {
     // 小程序不需要 preflight，因为这主要是给 h5 的，如果你要同时开发小程序和 h5 端，你应该使用环境变量来控制它
-    preflight: false,
+    preflight: isH5,
   },
 };
 ```
@@ -57,15 +67,15 @@ module.exports = {
 ### 引入 tailwindcss
 
 ```css App.vue
-<style>
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* 使用 scss */
-/* @import 'tailwindcss/base'; */
-/* @import 'tailwindcss/utilities'; */
-/* @import 'tailwindcss/components'; */
-</style>
+```
+或者
+```scss
+@import 'tailwindcss/base';
+@import 'tailwindcss/utilities';
+@import 'tailwindcss/components';
 ```
 
 ### 安装 weapp-tailwindcss
@@ -82,31 +92,21 @@ yarn add -D weapp-tailwindcss
 "postinstall": "weapp-tw patch"
 ```
 
-### 创建 platform.js 在根目录
-
-```javascript platform.js
-const isH5 = process.env.UNI_PLATFORM === "h5";
-const isApp = process.env.UNI_PLATFORM === "app";
-const isMpWeiXin = process.env.UNI_PLATFORM === "mp-weixin";
-
-module.exports = {
-  isH5,
-  isApp,
-  isMpWeiXin,
-};
-```
-
 ### 修改 vite.config
 
 ```ts vite.config.ts
 // vite.config.[jt]s
 import { defineConfig } from "vite";
 import uni from "@dcloudio/vite-plugin-uni";
-import { UnifiedViteWeappTailwindcssPlugin as uvwt } from "weapp-tailwindcss/vite";
+import { UnifiedViteWeappTailwindcssPlugin } from "weapp-tailwindcss/vite";
+import { isH5, isApp, isMpWeiXin } from "./platform";
 
 export default defineConfig({
   // uni 是 uni-app 官方插件， uvtw 一定要放在 uni 后，对生成文件进行处理
-  plugins: [uni(), uvwt()],
+  plugins: [uni(), uvwt({
+      rem2rpx: true,
+      disabled: isApp || isH5,
+  })],
   css: {
     postcss: {
       plugins: [
@@ -117,30 +117,6 @@ export default defineConfig({
       ],
     },
   },
-});
-```
-
-### 插件内置 rem 转 rpx 功能
-
-在 `^3.0.0` 版本中，所有插件都内置了 `rem2rpx` 参数，默认不开启，要启用它只需将它设置成 `true` 即可
-
-```ts vite.config.ts
-import { UnifiedViteWeappTailwindcssPlugin } from "weapp-tailwindcss/vite";
-
-UnifiedViteWeappTailwindcssPlugin({
-  rem2rpx: true,
-});
-```
-
-`App` 平台编译会报错，这时候要使用根据条件不编译到 `App`
-
-```ts vite.config.ts
-import { UnifiedViteWeappTailwindcssPlugin } from "weapp-tailwindcss/vite";
-import { isH5, isApp, isMpWeiXin } from "./platform";
-
-UnifiedViteWeappTailwindcssPlugin({
-  rem2rpx: true,
-  disabled: isApp,
 });
 ```
 
@@ -157,6 +133,25 @@ yarn add -D prettier prettier-plugin-tailwindcss
 ```javascript prettier.config.js
 // prettier.config.js
 module.exports = {
-  plugins: ["prettier-plugin-tailwindcss"],
-};
+    plugins: ["prettier-plugin-tailwindcss"],
+    printWidth: 140, //单行长度
+    tabWidth: 2, //缩进长度
+    useTabs: false, //使用空格代替tab缩进
+    semi: false, //句末使用分号
+    singleQuote: false, //使用单引号
+    quoteProps: "as-needed", //仅在必需时为对象的key添加引号
+    jsxSingleQuote: true, // jsx中使用单引号
+    trailingComma: "all", //多行时尽可能打印尾随逗号
+    bracketSpacing: true, //在对象前后添加空格-eg: { foo: bar }
+    jsxBracketSameLine: true, //多属性html标签的‘>’折行放置
+    arrowParens: "always", //单参数箭头函数参数周围使用圆括号-eg: (x) => x
+    requirePragma: false, //无需顶部注释即可格式化
+    insertPragma: false, //在已被preitter格式化的文件顶部加上标注
+    proseWrap: "preserve", //不知道怎么翻译
+    htmlWhitespaceSensitivity: "ignore", //对HTML全局空白不敏感
+    vueIndentScriptAndStyle: false, //不对vue中的script及style标签缩进
+    endOfLine: "lf", //结束行形式
+    embeddedLanguageFormatting: "auto", //对引用代码进行格式化
+}
+
 ```
